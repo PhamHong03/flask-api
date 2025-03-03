@@ -6,14 +6,14 @@ specialization_bp = Blueprint('specialization_bp', __name__)
 @specialization_bp.route('/specialization', methods=['GET'])
 def get_all_specialization():
     specializations = SpecializationController.get_all_specialization()
-    return jsonify([{"id":s.id, "name": s.name} for s in specializations])
+    return jsonify([{"id":s.id, "name": s.name, "quantity_patient":s.quantity_patient} for s in specializations])
 
 
 @specialization_bp.route('/specializations/<int:specialization_id>', methods=['GET'])
 def get_specialization_by_id(specialization_id): 
     spec = SpecializationController.get_specialization_by_id(specialization_id)
     if spec:
-        return jsonify({"id": spec.id, "name":  spec.name})
+        return jsonify({"id": spec.id, "name":  spec.name, "quantity_patient": spec.quantity_patient})
 
     return jsonify({"message": "Specialization not found"}), 404
 

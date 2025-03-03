@@ -5,8 +5,8 @@ from flask_cors import CORS
 from database import db
 from models import Doctor, Specialization, Education
 from routes.specialization_route import specialization_bp
-from controllers.education_controller import education_bp
-from controllers.doctor_controller import doctor_bp
+from routes.education_route import education_bp
+# from routes.doctor_route import doctor_bp
 
 
 app = Flask(__name__)
@@ -33,7 +33,7 @@ migrate = Migrate(app, db)
 
 
 app.register_blueprint(specialization_bp)
-# app.register_blueprint(education_bp)
+app.register_blueprint(education_bp)
 # app.register_blueprint(doctor_bp)
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ class SpecializationController:
     
     @staticmethod
     def create_specialization(data):
-        new_specialization = Specialization(name=data['name'])
+        new_specialization = Specialization(name=data['name'], quantity_patient=data['quantity_patient'])
         db.session.add(new_specialization)
         db.session.commit()
         return new_specialization
@@ -33,7 +33,7 @@ class SpecializationController:
         specialization = Specialization.query.get(specialization_id)
         if specialization:
             specialization.name = data['name']
-
+            specialization.quantity_patient = data['quantity_patient']
             db.session.commit()
         return specialization
     

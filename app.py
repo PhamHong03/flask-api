@@ -6,6 +6,7 @@ from database import db
 from models import Doctor, Specialization, Education
 from routes.specialization_route import specialization_bp
 from routes.education_route import education_bp
+from routes.user_route import user_bp
 # from routes.doctor_route import doctor_bp
 
 
@@ -34,6 +35,7 @@ migrate = Migrate(app, db)
 
 app.register_blueprint(specialization_bp)
 app.register_blueprint(education_bp)
+app.register_blueprint(user_bp)
 # app.register_blueprint(doctor_bp)
 
 if __name__ == "__main__":

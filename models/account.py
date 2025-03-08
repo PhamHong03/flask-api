@@ -1,13 +1,14 @@
-from app import db, Bcrypt
+from database import db
+from flask_bcrypt  import  Bcrypt
 bcrypt = Bcrypt()
 class Account(db.Model):
     __tablename__ = 'accounts'
-    account_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     username = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(100),nullable=False)
-    role = db.Column(db.Integer, nullable=False)
+    role = db.Column(db.String(100), nullable=False)
     firebase_uid = db.Column(db.String(255), nullable=False, unique=True)
 
     def __init__(self, firebase_uid, username, email, phone_number, password, role):
@@ -23,6 +24,5 @@ class Account(db.Model):
         return bcrypt.generate_password_hash(password).decode("utf-8")
     
     @staticmethod
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
-
+    def check_password(stored_password, input_password):
+        return bcrypt.check_password_hash(stored_password, input_password)

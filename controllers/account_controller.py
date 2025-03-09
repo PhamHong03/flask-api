@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 from database import db
 from models.account import Account
 from controllers.auth_controller import verify_firebase_token   
@@ -27,6 +27,29 @@ def register_account(data, auth_header):
     db.session.commit()
     print("Insert successfully")
     return jsonify({"message": "Tạo tài khoản thành công"}), 201
+
+
+def login_account():
+    auth_header = request.headers.get("Authorization")
+    firebase_uid, error, status_code = verify_firebase_token(auth_header)
+
+    if error:
+        return jsonify(error), status_code
+    account = Account.query.filter_by(firebase_uid=firebase_uid).first()
+
+    if not account:
+        return jsonify({"message": "Tài khoản không tồn tại"}), 404
+    
+    return jsonify({
+        "message": "Đăng nhập thành công",
+        "account": {
+            "id": account.id,
+            "username": account.username,
+            "email": account.email,
+            "phone_number": account.phone_number,
+            "role" : account.role
+        }
+        }), 200
 
 def get_all_accounts():
     """Lấy danh sách tất cả tài khoản"""

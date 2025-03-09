@@ -12,6 +12,18 @@ import pyrebase
 import json
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timezone
+import pytz
+
+# Kiểm tra giờ UTC
+utc_now = datetime.now(pytz.utc)
+print(f"🕰 Server Time (UTC): {utc_now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}")
+
+# Kiểm tra giờ Việt Nam
+vn_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+vn_now = datetime.now(vn_tz)
+print(f"🇻🇳 Vietnam Time: {vn_now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}")
+
 load_dotenv()
 print(os.getenv("SECRET_KEY"))
 app = Flask(__name__)

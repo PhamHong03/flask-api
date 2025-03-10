@@ -3,11 +3,12 @@ from flask_migrate import Migrate
 from config.config import Config
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from models import Account, Specialization, Education, Category_Disease
+from models import Account, Specialization, Education, Category_Disease, Diagnose_Disease
 from routes.specialization_route import specialization_bp
 from routes.education_route import education_bp
 from routes.account_route import account_bp
 from routes.category_disease_route import category_disease_bp
+from routes.diagnose_disease_route import diagnose_disease_bp
 from database import db
 import pyrebase
 import json
@@ -45,6 +46,7 @@ app.register_blueprint(specialization_bp)
 app.register_blueprint(education_bp)
 app.register_blueprint(account_bp)
 app.register_blueprint(category_disease_bp)
+app.register_blueprint(diagnose_disease_bp)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -3,7 +3,7 @@ from controllers.education_controller import EducationController
 
 education_bp = Blueprint('education_bp', __name__)
 
-@education_bp.route('/education', methods=['GET'])
+@education_bp.route('/educations', methods=['GET'])
 def get_all_education():
     educations = EducationController.get_all_education()
 
@@ -19,10 +19,18 @@ def get_education_by_id(education_id):
 
     return jsonify({"message": "Education not found"}), 404
 
-@education_bp.route('/education', methods=["POST"])
+@education_bp.route('/educations', methods=["POST"])
 def create_education():
     data = request.json
+    print("📥 Received data:", data) 
+
+    if not data or 'name' not in data:
+        print("⚠️ Missing data in request!")
+        return jsonify({"message": "Invalid data"}), 400
+    
     education = EducationController.create_education(data)
+
+    print(f"✅ Created Education: ID={education.id}, Name={education.name}") 
     return jsonify({"message": "Education created", "id": education.id}), 201
 
 
@@ -36,7 +44,7 @@ def update_education(education_id):
     
     return jsonify({"message":"Education not found"}), 404
 
-@education_bp.route('/education_id', methods=['DELETE'])
+@education_bp.route('/educations/<int:education_id>', methods=['DELETE'])
 def delete_education(education_id):
     education = EducationController.delete_education(education_id)
 

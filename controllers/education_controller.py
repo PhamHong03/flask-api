@@ -25,13 +25,14 @@ class EducationController:
         if education:
             education.name = data['name']
             db.session.commit()
-        
-        return education
+            return education
+        return None
     
     @staticmethod 
     def delete_education(education_id):
         education = Education.query.get(education_id)
         if education:
-            db.session.delete(education_id)
+            db.session.delete(education)
             db.session.commit()
-        return education
+            return education
+        return None

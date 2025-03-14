@@ -9,7 +9,7 @@ class Education(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     
-    # Quan hệ với Physician
+    # Quan hệ với Physician (Định nghĩa backref ở đây)
     physicians = db.relationship('Physician', backref='education', lazy=True)
     
     def __init__(self, name):

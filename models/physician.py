@@ -13,9 +13,7 @@ class Physician(db.Model):
     specialization_id = db.Column(db.Integer, db.ForeignKey('specializations.id', ondelete="CASCADE"), nullable=False)
     education_id = db.Column(db.Integer, db.ForeignKey('educations.id', ondelete="CASCADE"), nullable=False)
 
-    specialization = db.relationship('Specialization', backref='physician_list')
-    education = db.relationship('Education', backref='physician_list')
-
+    
     def __init__(self, name, email, phone, address, gender, specialization_id, education_id):
         self.name = name
         self.email = email

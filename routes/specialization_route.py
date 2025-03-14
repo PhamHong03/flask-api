@@ -3,7 +3,7 @@ from controllers.specialization_controller import SpecializationController
 
 specialization_bp = Blueprint('specialization_bp', __name__)
 
-@specialization_bp.route('/specialization', methods=['GET'])
+@specialization_bp.route('/specializations', methods=['GET'])
 def get_all_specialization():
     specializations = SpecializationController.get_all_specialization()
     return jsonify([{"id":s.id, "name": s.name, "quantity_patient":s.quantity_patient} for s in specializations])
@@ -18,7 +18,7 @@ def get_specialization_by_id(specialization_id):
     return jsonify({"message": "Specialization not found"}), 404
 
 
-@specialization_bp.route('/specialization',methods=['POST'])
+@specialization_bp.route('/specializations',methods=['POST'])
 def create_specialization():
     data = request.json
     specialization = SpecializationController.create_specialization(data)

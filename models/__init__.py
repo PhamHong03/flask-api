@@ -5,3 +5,5 @@ from .category_disease import Category_Disease
 from .diagnose_disease import Diagnose_Disease
 from .physician import Physician
 from .patient import Patient
+from .room import Room
+from .medical_history import MedicalHistory

@@ -15,6 +15,8 @@ class Patient(db.Model):
     code_card_day_start = db.Column(db.BigInteger, nullable=False)  
     status = db.Column(db.Integer, nullable=False)
 
+    # Quan hệ với ApplicationForm
+    application_forms = db.relationship('ApplicationForm', back_populates='patient', cascade="all, delete-orphan")
 
     def __init__(self, name, dateofbirth, gender, email, phone, job, medical_code_card, code_card_day_start, status):
         self.name = name

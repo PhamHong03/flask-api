@@ -7,3 +7,4 @@ from .physician import Physician
 from .patient import Patient
 from .room import Room
 from .medical_history import MedicalHistory
+from .application_form import ApplicationForm

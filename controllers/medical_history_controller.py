@@ -3,7 +3,7 @@ from database import db
 
 class MedicalHistoryController:
     @staticmethod
-    def get_medical_history():
+    def get_medical_histories():
         return MedicalHistory.query.all()
     
     @staticmethod   

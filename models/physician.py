@@ -9,18 +9,25 @@ class Physician(db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True) 
     phone = db.Column(db.String(255), nullable=False, unique=True)  
     address = db.Column(db.String(255), nullable=False)
-    gender = db.Column(db.Integer, nullable=False)    
+    gender = db.Column(db.String(100), nullable=False)    
     specialization_id = db.Column(db.Integer, db.ForeignKey('specializations.id', ondelete="CASCADE"), nullable=False)
     education_id = db.Column(db.Integer, db.ForeignKey('educations.id', ondelete="CASCADE"), nullable=False)
+    
+    
+    specialization = db.relationship('Specialization', back_populates='physicians')
+
+    # Thêm quan hệ với Education
+    education = db.relationship('Education', back_populates='physicians')
 
     medical_histories = db.relationship('MedicalHistory', back_populates='physician', cascade="all, delete-orphan")
 
 
-    def __init__(self, name, email, phone, address, gender, specialization_id, education_id):
+    def __init__(self, name, email, phone, address, gender, education_id, specialization_id):
         self.name = name
         self.email = email
         self.phone = phone
         self.address = address  
         self.gender = gender
-        self.specialization_id = specialization_id
+        
         self.education_id = education_id
+        self.specialization_id = specialization_id

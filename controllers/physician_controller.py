@@ -12,6 +12,7 @@ class PhysicianController:
     
     @staticmethod
     def create_physician(data):
+        print("Data from Android:", data)
         new_physician = Physician(
             name=data['name'], 
             email=data['email'], 

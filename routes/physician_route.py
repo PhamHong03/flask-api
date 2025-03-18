@@ -40,3 +40,20 @@ def get_physician(physician_id):
         "specialization_id": physician.specialization_id,
         "education_id": physician.education_id
     }), 200
+
+
+@physician_bp.route('/physicians', methods=['POST'])
+def create_physician():
+    data = request.get_json()
+    print("Received data from Android:", data)
+    new_physician = PhysicianController.create_physician(data)
+    return jsonify({
+        "id": new_physician.id,
+        "name": new_physician.name,
+        "email": new_physician.email,
+        "phone": new_physician.phone,
+        "address": new_physician.address,
+        "gender": new_physician.gender,
+        "specialization_id": new_physician.specialization_id,
+        "education_id": new_physician.education_id
+    }), 201

@@ -10,8 +10,7 @@ class Specialization(db.Model):
     name = db.Column(db.String(255), nullable=False, unique=True) 
     quantity_patient = db.Column(db.Integer, nullable=False, default=0)  
     
-    # Quan hệ với Physician (Định nghĩa backref ở đây)
-    physicians = db.relationship('Physician', backref='specialization', lazy=True, passive_deletes=True)
+    physicians = db.relationship('Physician', back_populates='specialization', cascade="all, delete")
 
     def __init__(self, name, quantity_patient=0):
         self.name = name

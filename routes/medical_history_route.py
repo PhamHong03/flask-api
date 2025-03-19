@@ -39,7 +39,7 @@ def get_medical_history(id):
 @medical_history_bp.route('/medical_histories', methods=['POST'])
 def create_medical_history():
     data = request.get_json()
-    if not data or 'description' not in data or 'physician_id' not in data:
+    if not data or 'description' not in data or 'physician_id' not in data or 'date' not in data:
         return jsonify({"message": "Missing required fields"}), 400
 
     new_medical_history = MedicalHistoryController.create_medical_history(data)

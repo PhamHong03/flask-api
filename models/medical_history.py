@@ -11,6 +11,6 @@ class MedicalHistory(db.Model):
 
     application_forms = db.relationship('ApplicationForm', back_populates='medical_history', cascade="all, delete-orphan")
 
-    def __init__(self, description, physician_id):
+    def __init__(self, description,  physician_id):
         self.description = description
         self.physician_id = physician_id

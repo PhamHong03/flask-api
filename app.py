@@ -23,13 +23,13 @@ from datetime import datetime, timezone
 import pytz
 
 # Kiểm tra giờ UTC
-utc_now = datetime.now(pytz.utc)
-# print(f"🕰 Server Time (UTC): {utc_now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}")
+# Múi giờ Việt Nam
+vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
-# Kiểm tra giờ Việt Nam
-vn_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-vn_now = datetime.now(vn_tz)
-# print(f"🇻🇳 Vietnam Time: {vn_now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}")
+# Lấy thời gian hiện tại theo giờ Việt Nam
+vietnam_time = datetime.now(vietnam_tz)
+print("🕰 Server Time (Vietnam):", vietnam_time.strftime('%Y-%m-%d %H:%M:%S %Z%z'))
+print("🇻🇳 Vietnam Time:", vietnam_time.strftime('%Y-%m-%d %H:%M:%S %Z%z'))
 
 load_dotenv()
 # print(os.getenv("SECRET_KEY"))

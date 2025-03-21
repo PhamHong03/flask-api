@@ -14,11 +14,13 @@ class Patient(db.Model):
     medical_code_card = db.Column(db.String(255), nullable=False)
     code_card_day_start = db.Column(db.Date, nullable=False)  
     status = db.Column(db.String(100), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), unique=True, nullable=False)    
 
     # Quan hệ với ApplicationForm
+    account = db.relationship('Account', backref=db.backref('patient', uselist=False))
     application_forms = db.relationship('ApplicationForm', back_populates='patient', cascade="all, delete-orphan")
 
-    def __init__(self, name, day_of_birth, gender, email, phone, job, medical_code_card, code_card_day_start, status):
+    def __init__(self, name, day_of_birth, gender, email, phone, job, medical_code_card, code_card_day_start, status, account_id):
         self.name = name
         self.day_of_birth = day_of_birth
         self.gender = gender
@@ -28,3 +30,4 @@ class Patient(db.Model):
         self.medical_code_card = medical_code_card
         self.code_card_day_start = code_card_day_start
         self.status = status
+        self.account_id = account_id    

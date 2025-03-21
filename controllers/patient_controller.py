@@ -1,4 +1,5 @@
 from models.patient import Patient
+from models.account import Account
 from database import db
 from datetime import datetime
 
@@ -13,6 +14,16 @@ class PatientController:
     
     @staticmethod
     def create_patient(data):
+        account_id = data.get('account_id')
+        
+        account = Account.query.get(account_id)
+        if not account:
+            return None, "Tài khoản không tồn tại"
+
+        existing_patient = Patient.query.filter_by(account_id=account_id).first()
+        if existing_patient:
+            return None, "Tài khoản này đã có hồ sơ bệnh nhân"
+
         new_patient = Patient(
             name=data['name'],
             day_of_birth=datetime.strptime(data['day_of_birth'], "%Y-%m-%d").date(),  
@@ -22,8 +33,9 @@ class PatientController:
             job=data['job'],
             medical_code_card=data['medical_code_card'],
             code_card_day_start=datetime.strptime(data['code_card_day_start'], "%Y-%m-%d").date(),  
-            status=data['status']
+            status=data['status'],
+            account_id=account_id
         )
         db.session.add(new_patient)
         db.session.commit()
-        return new_patient
+        return new_patient, None

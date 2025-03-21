@@ -3,7 +3,7 @@ from controllers.application_form_controller import ApplicationFormController
 
 
 application_form_bp = Blueprint('application_form_bp', __name__)    
-@application_form_bp.route('/application_forms', methods=['GET'])
+@application_form_bp.route('/application-forms', methods=['GET'])
 def get_application_forms():    
     application_forms = ApplicationFormController.get_application_forms()
 
@@ -20,7 +20,7 @@ def get_application_forms():
         }
         for af in application_forms]), 200
     
-@application_form_bp.route('/application_forms/<int:application_form_id>', methods=['GET'])
+@application_form_bp.route('/application-forms/<int:application_form_id>', methods=['GET'])
 def get_application_form(application_form_id):
     application_form = ApplicationFormController.get_application_form_by_id(application_form_id)
     if application_form is None:
@@ -35,7 +35,7 @@ def get_application_form(application_form_id):
     }), 200
 
 
-@application_form_bp.route('/application_forms', methods=['POST'])
+@application_form_bp.route('/application-forms', methods=['POST'])
 def create_application_form():
     data = request.get_json()
     if not data or 'content' not in data or 'room_id' not in data:

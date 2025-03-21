@@ -26,8 +26,15 @@ def register_account(data, auth_header):
     db.session.add(new_account)
     db.session.commit()
     print("Insert successfully")
-    return jsonify({"message": "Tạo tài khoản thành công"}), 201
 
+    return jsonify({
+        "message": "Tạo tài khoản thành công",
+        "id": new_account.id, 
+        "username": new_account.username,
+        "email": new_account.email,
+        "phone_number": new_account.phone_number,
+        "role": new_account.role
+    }), 201
 
 def login_account():
     auth_header = request.headers.get("Authorization")

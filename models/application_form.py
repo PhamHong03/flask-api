@@ -5,7 +5,7 @@ class ApplicationForm(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(255), nullable=False)
-    application_form_date = db.Column(db.BigInteger, nullable=False)
+    application_form_date = db.Column(db.Date, nullable=False)
 
     room_id = db.Column(db.String(255), db.ForeignKey('room.id', ondelete="CASCADE"), nullable=False)
     patient_id = db.Column(db.Integer, db.ForeignKey('patients.id', ondelete="CASCADE"), nullable=False)

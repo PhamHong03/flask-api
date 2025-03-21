@@ -19,6 +19,7 @@ class Patient(db.Model):
     # Quan hệ với ApplicationForm
     account = db.relationship('Account', backref=db.backref('patient', uselist=False))
     application_forms = db.relationship('ApplicationForm', back_populates='patient', cascade="all, delete-orphan")
+    
 
     def __init__(self, name, day_of_birth, gender, email, phone, job, medical_code_card, code_card_day_start, status, account_id):
         self.name = name

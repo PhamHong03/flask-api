@@ -13,7 +13,7 @@ def get_application_forms():
         {
             "id" : af.id,
             "content": af.content,
-            "application_form_date": af.application_form_date,
+            "application_form_date": af.application_form_date("%Y-%m-%d"),
             "room_id": af.room_id,
             "patient_id": af.patient_id,
             "medical_history_id": af.medical_history_id
@@ -28,7 +28,7 @@ def get_application_form(application_form_id):
     return jsonify({
         "id" : application_form.id,
         "content": application_form.content,
-        "application_form_date": application_form.application_form_date,
+        "application_form_date": application_form.application_form_date("%Y-%m-%d"),
         "room_id": application_form.room_id,
         "patient_id": application_form.patient_id,
         "medical_history_id": application_form.medical_history_id
@@ -45,7 +45,7 @@ def create_application_form():
     return jsonify({
         "id": new_application_form.id,
         "content": new_application_form.content,
-        "application_form_date": new_application_form.application_form_date,
+        "application_form_date": new_application_form.application_form_date.strftime("%Y-%m-%d"),
         "room_id": new_application_form.room_id,
         "patient_id": new_application_form.patient_id,
         "medical_history_id": new_application_form.medical_history_id

@@ -1,5 +1,6 @@
 from models.application_form import ApplicationForm
 from database import db
+from datetime import datetime
 
 class ApplicationFormController:
     @staticmethod
@@ -14,7 +15,7 @@ class ApplicationFormController:
     def create_application_form(data):
         new_application_form = ApplicationForm(
             content=data.get('content', ''),
-            application_form_date=data.get('application_form_date', 0),
+            application_form_date=datetime.strptime(data.get('application_form_date', ''), "%Y-%m-%d").date(),
             room_id=data.get('room_id', ''),
             patient_id=data.get('patient_id', 0),
             medical_history_id=data.get('medical_history_id', 0)
@@ -30,7 +31,7 @@ class ApplicationFormController:
             return None  
 
         application_form.content = data.get('content', application_form.content)
-        application_form.application_form_date = data.get('application_form_date', application_form.application_form_date)
+        application_form.application_form_date = datetime.strptime(data['application_form_date'], "%Y-%m-%d").date()
         application_form.room_id = data.get('room_id', application_form.room_id)
         application_form.patient_id = data.get('patient_id', application_form.patient_id)
         application_form.medical_history_id = data.get('medical_history_id', application_form.medical_history_id)

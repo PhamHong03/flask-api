@@ -13,7 +13,7 @@ def get_application_forms():
         {
             "id" : af.id,
             "content": af.content,
-            "application_form_date": af.application_form_date("%Y-%m-%d"),
+            "application_form_date": af.application_form_date.strftime("%Y-%m-%d"),
             "room_id": af.room_id,
             "patient_id": af.patient_id,
             "medical_history_id": af.medical_history_id

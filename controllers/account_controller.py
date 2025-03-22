@@ -16,9 +16,7 @@ def register_account(data, auth_header):
 
     new_account = Account(
         firebase_uid=firebase_uid,
-        username=data['username'],
         email=data['email'],
-        phone_number=data['phone_number'],
         password=hashed_password,  
         role=data['role']
     )
@@ -30,9 +28,7 @@ def register_account(data, auth_header):
     return jsonify({
         "message": "Tạo tài khoản thành công",
         "id": new_account.id, 
-        "username": new_account.username,
         "email": new_account.email,
-        "phone_number": new_account.phone_number,
         "role": new_account.role
     }), 201
 
@@ -51,9 +47,7 @@ def login_account():
         "message": "Đăng nhập thành công",
         "account": {
             "id": account.id,
-            "username": account.username,
             "email": account.email,
-            "phone_number": account.phone_number,
             "role" : account.role
         }
         }), 200
@@ -64,8 +58,6 @@ def get_all_accounts():
     return jsonify([{
         "id": acc.id,
         "firebase_uid": acc.firebase_uid,
-        "username": acc.username,
         "email": acc.email,
-        "phone_number": acc.phone_number,
         "role": acc.role
     } for acc in accounts]), 200

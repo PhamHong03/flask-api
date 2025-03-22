@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify   
 from controllers.physician_controller import PhysicianController
+from models.physician import Physician
 
 physician_bp = Blueprint('physician_bp', __name__)
 
@@ -19,7 +20,8 @@ def get_all_physician():
             "address": p.address,
             "gender": p.gender,
             "specialization_id": p.specialization_id,
-            "education_id": p.education_id
+            "education_id": p.education_id,
+            "account_id": p.account_id
         }
         for p in physicians
     ]), 200  
@@ -38,7 +40,8 @@ def get_physician(physician_id):
         "address": physician.address,
         "gender": physician.gender,
         "specialization_id": physician.specialization_id,
-        "education_id": physician.education_id
+        "education_id": physician.education_id,
+        "account_id": physician.account_id
     }), 200
 
 
@@ -55,5 +58,24 @@ def create_physician():
         "address": new_physician.address,
         "gender": new_physician.gender,
         "specialization_id": new_physician.specialization_id,
-        "education_id": new_physician.education_id
+        "education_id": new_physician.education_id,
+        "account_id": new_physician.account_id
     }), 201
+        
+@physician_bp.route('/physicians/account/<int:account_id>', methods=['GET'])
+def get_physicians_by_account_id(account_id):
+    physician = Physician.query.filter_by(account_id=account_id).first()
+    if not physician:
+        return jsonify({"message": "Physician not found"}), 404
+    
+    return jsonify({
+        "id": physician.id,
+        "name": physician.name,
+        "email": physician.email,
+        "phone": physician.phone,
+        "address": physician.address,
+        "gender": physician.gender,
+        "specialization_id": physician.specialization_id,
+        "education_id": physician.education_id,
+        "account_id": physician.account_id
+    }), 200

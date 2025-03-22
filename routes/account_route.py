@@ -36,9 +36,7 @@ def login():
         return jsonify({
             "message": "Đăng nhập thành công",
             "id": user.id, 
-            "username": user.username,
             "email": user.email,
-            "phone_number": user.phone_number,
             "role": user.role
         }), 200
     except Exception as e:

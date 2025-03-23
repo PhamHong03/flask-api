@@ -1,4 +1,5 @@
 from models.appointment_form import AppointmentForm
+from models.application_form import ApplicationForm
 from database import db
 from datetime import datetime
 
@@ -13,10 +14,20 @@ class AppointmentFormController:
     
     @staticmethod
     def create_appointment_form(data):
+        
+        application_form_id = data.get('application_form_id', 0)
+        if not ApplicationForm.query.get(application_form_id):
+            return {"error": "Application form not found"}, 404
+
         new_appointment_form = AppointmentForm(
             description=data.get('description', ''),
-            application_form_id=data.get('application_form_id', 0)
+            application_form_id=application_form_id
         )
-        db.session.add(new_appointment_form)
-        db.session.commit()
-        return new_appointment_form
+        
+        try:
+            db.session.add(new_appointment_form)
+            db.session.commit()
+            return new_appointment_form
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500

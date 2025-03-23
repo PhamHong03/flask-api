@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from config.config import Config
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from models import Account, Specialization, Education, Category_Disease, Diagnose_Disease, Physician, Patient, Room, MedicalHistory, ApplicationForm
+from models import Account, Specialization, Education, Category_Disease, Diagnose_Disease, Physician, Patient, Room, MedicalHistory, ApplicationForm, AppointmentForm
 from routes.specialization_route import specialization_bp
 from routes.education_route import education_bp
 from routes.account_route import account_bp
@@ -14,6 +14,7 @@ from routes.patient_route import patient_bp
 from routes.room_route import room_bp
 from routes.medical_history_route import medical_history_bp
 from routes.application_form_route import application_form_bp
+from routes.appointment_form_route import appointment_form_bp
 from database import db
 import pyrebase
 import json
@@ -57,6 +58,7 @@ app.register_blueprint(patient_bp)
 app.register_blueprint(room_bp)
 app.register_blueprint(medical_history_bp)
 app.register_blueprint(application_form_bp)
+app.register_blueprint(appointment_form_bp)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

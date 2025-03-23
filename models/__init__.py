@@ -8,3 +8,4 @@ from .patient import Patient
 from .room import Room
 from .medical_history import MedicalHistory
 from .application_form import ApplicationForm
+from .appointment_form import AppointmentForm

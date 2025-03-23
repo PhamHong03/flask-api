@@ -1,6 +1,10 @@
 from flask import Blueprint, request, jsonify   
 from controllers.physician_controller import PhysicianController
 from models.physician import Physician
+from models.patient import Patient
+from models.application_form import ApplicationForm
+from models.medical_history import MedicalHistory
+from database import db
 
 physician_bp = Blueprint('physician_bp', __name__)
 
@@ -79,3 +83,24 @@ def get_physicians_by_account_id(account_id):
         "education_id": physician.education_id,
         "account_id": physician.account_id
     }), 200
+
+@physician_bp.route('/physician/<int:physician_id>/patients', methods=['GET'])
+def get_patients_by_physician(physician_id):
+    print(f"🔍 Requested physician_id: {physician_id}")
+
+    patients = db.session.query(Patient, ApplicationForm.application_form_date)\
+        .join(ApplicationForm, ApplicationForm.patient_id == Patient.id)\
+        .join(MedicalHistory, ApplicationForm.medical_history_id == MedicalHistory.id)\
+        .filter(MedicalHistory.physician_id == physician_id).all()
+
+    if not patients:
+        return jsonify({"error": f"No patients found for physician_id: {physician_id}"}), 404
+
+    patient_list = [
+        {"patient_id": p[0].id, "patient_name": p[0].name, "application_form_date": p[1]}
+        for p in patients
+    ]
+
+    return jsonify(patient_list)
+
+

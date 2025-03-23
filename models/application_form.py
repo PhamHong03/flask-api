@@ -15,6 +15,9 @@ class ApplicationForm(db.Model):
     patient = db.relationship('Patient', back_populates='application_forms')
     medical_history = db.relationship('MedicalHistory', back_populates='application_forms')
 
+    appointment_forms = db.relationship('AppointmentForm', back_populates='application_form', cascade="all, delete-orphan")
+
+
     def __init__(self, content, application_form_date, room_id, patient_id, medical_history_id):
         self.content = content
         self.application_form_date = application_form_date

@@ -5,3 +5,4 @@ from flask_sqlalchemy import SQLAlchemy
 # mysql = MySQL()
 
 db = SQLAlchemy()
+db_session = db.session

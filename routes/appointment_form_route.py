@@ -32,6 +32,7 @@ def get_appointment_form(appointment_form_id):
         "application_form_id": appointment_form.application_form_id
     }), 200
 
+
 @appointment_form_bp.route('/appointment-forms', methods=['POST'])
 def create_appointment_form():
     data = request.get_json()
@@ -41,6 +42,10 @@ def create_appointment_form():
     
     if not isinstance(data['application_form_id'], int) or data['application_form_id'] <= 0:
         return jsonify({"message": "Invalid application_form_id"}), 400
+
+    existing_application_form = AppointmentFormController.get_application_form_by_id(data['application_form_id'])
+    if not existing_application_form:
+        return jsonify({"message": "Application Form ID does not exist"}), 404
 
     result = AppointmentFormController.create_appointment_form(data)
     

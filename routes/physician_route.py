@@ -88,16 +88,27 @@ def get_physicians_by_account_id(account_id):
 def get_patients_by_physician(physician_id):
     print(f"🔍 Requested physician_id: {physician_id}")
 
-    patients = db.session.query(Patient, ApplicationForm.application_form_date)\
-        .join(ApplicationForm, ApplicationForm.patient_id == Patient.id)\
-        .join(MedicalHistory, ApplicationForm.medical_history_id == MedicalHistory.id)\
-        .filter(MedicalHistory.physician_id == physician_id).all()
+    patients = db.session.query(
+        Patient, 
+        ApplicationForm.id, 
+        ApplicationForm.application_form_date, 
+        ApplicationForm.content  # ✅ Lấy thêm nội dung đơn khám
+    )\
+    .join(ApplicationForm, ApplicationForm.patient_id == Patient.id)\
+    .join(MedicalHistory, ApplicationForm.medical_history_id == MedicalHistory.id)\
+    .filter(MedicalHistory.physician_id == physician_id).all()
 
     if not patients:
         return jsonify({"error": f"No patients found for physician_id: {physician_id}"}), 404
 
     patient_list = [
-        {"patient_id": p[0].id, "patient_name": p[0].name, "application_form_date": p[1]}
+        {
+            "patient_id": p[0].id,
+            "patient_name": p[0].name,
+            "application_form_id": p[1],  
+            "application_form_date": p[2],
+            "application_form_content": p[3]  
+        }
         for p in patients
     ]
 

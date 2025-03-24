@@ -24,3 +24,14 @@ class ApplicationForm(db.Model):
         self.room_id = room_id
         self.patient_id = patient_id
         self.medical_history_id = medical_history_id
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "application_form_date": self.application_form_date.strftime("%Y-%m-%d"),
+            "room_id": self.room_id,
+            "patient_id": self.patient_id,
+            "medical_history_id": self.medical_history_id
+        }

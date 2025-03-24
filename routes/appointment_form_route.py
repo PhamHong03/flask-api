@@ -47,6 +47,12 @@ def create_appointment_form():
     if not existing_application_form:
         return jsonify({"message": "Application Form ID does not exist"}), 404
 
+    # Kiểm tra xem application_form_id có đúng của patient_id không
+    if 'patient_id' in data:
+        if existing_application_form.patient_id != data['patient_id']:
+            return jsonify({"message": "Application Form does not belong to this patient"}), 403
+
+
     result = AppointmentFormController.create_appointment_form(data)
     
     if isinstance(result, dict) and "error" in result:

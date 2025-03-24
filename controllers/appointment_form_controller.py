@@ -14,10 +14,7 @@ class AppointmentFormController:
         return AppointmentForm.query.get(appointment_form_id)
     
     def get_application_form_by_id(application_form_id):
-        application_form = ApplicationForm.query.get(application_form_id)
-        if not application_form:
-            return jsonify({"error": "Application Form not found"}), 404
-        return jsonify(application_form.to_dict()), 200
+        return ApplicationForm.query.get(application_form_id) 
     
 
     @staticmethod

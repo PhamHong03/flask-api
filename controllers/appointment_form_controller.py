@@ -20,7 +20,7 @@ class AppointmentFormController:
     @staticmethod
     def create_appointment_form(data):
         
-        application_form_id = data.get('application_form_id', 0)
+        application_form_id = data.get('application_form_id',0)
         if not ApplicationForm.query.get(application_form_id):
             return {"error": "Application form not found"}, 404
 

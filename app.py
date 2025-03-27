@@ -40,10 +40,17 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 bcrypt = Bcrypt(app)
 
+# Định nghĩa thư mục lưu ảnh
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)  # Tạo thư mục nếu chưa tồn tại
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost:3306/healthy_and_diagnosis'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config.from_object(Config)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 db.init_app(app)
 migrate = Migrate(app, db)

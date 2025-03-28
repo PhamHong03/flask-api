@@ -15,6 +15,7 @@ from routes.room_route import room_bp
 from routes.medical_history_route import medical_history_bp
 from routes.application_form_route import application_form_bp
 from routes.appointment_form_route import appointment_form_bp
+from routes.upload_images_route import upload_images_bp
 from database import db
 import pyrebase
 import json
@@ -32,25 +33,24 @@ vietnam_time = datetime.now(vietnam_tz)
 print("🕰 Server Time (Vietnam):", vietnam_time.strftime('%Y-%m-%d %H:%M:%S %Z%z'))
 print("🇻🇳 Vietnam Time:", vietnam_time.strftime('%Y-%m-%d %H:%M:%S %Z%z'))
 
+# Load biến môi trường từ .env
 load_dotenv()
-# print(os.getenv("SECRET_KEY"))
+
+# Khởi tạo Flask
 app = Flask(__name__)
-
 CORS(app, resources={r"/*": {"origins": "*"}})
-
 bcrypt = Bcrypt(app)
 
-# Định nghĩa thư mục lưu ảnh
+# 🔹 Định nghĩa thư mục lưu ảnh
 UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)  # Tạo thư mục nếu chưa tồn tại
+    os.makedirs(UPLOAD_FOLDER)
 
+# Cấu hình Flask
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost:3306/healthy_and_diagnosis'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 app.config.from_object(Config)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -66,6 +66,7 @@ app.register_blueprint(room_bp)
 app.register_blueprint(medical_history_bp)
 app.register_blueprint(application_form_bp)
 app.register_blueprint(appointment_form_bp)
+app.register_blueprint(upload_images_bp)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

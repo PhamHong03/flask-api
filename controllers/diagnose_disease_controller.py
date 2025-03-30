@@ -9,3 +9,4 @@ class DiagnoseDiseaseController:
     @staticmethod
     def get_diagnose_disease_by_id(diagnose_disease_id):
         return Diagnose_Disease.query.get(diagnose_disease_id)
+    

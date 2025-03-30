@@ -8,7 +8,8 @@ class AppointmentForm(db.Model):
     application_form_id = db.Column(db.Integer, db.ForeignKey('application_forms.id', ondelete="CASCADE"), nullable=False)
 
     application_form = db.relationship('ApplicationForm', back_populates='appointment_forms')
-
+    
+    images = db.relationship('Images', back_populates='appointment_form', cascade="all, delete-orphan")
     def __init__(self, description, application_form_id):
         self.description = description
         self.application_form_id = application_form_id

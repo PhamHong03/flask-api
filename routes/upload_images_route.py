@@ -1,32 +1,71 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
 import os
+import uuid
+from werkzeug.utils import secure_filename
+from datetime import datetime
+from AI import predict_liver_disease
+from database import db
+from models.images import Images
 
 upload_images_bp = Blueprint('upload_images_bp', __name__)
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @upload_images_bp.route('/upload_images', methods=['POST'])
-def upload_file():
-    if 'image' not in request.files:
-        return jsonify({"message": "No file part"}), 400
-    
-    file = request.files['image']
-    
+def upload_image():
+    if 'file' not in request.files:
+        return jsonify({"message": "Không có file!"}), 400
+
+    file = request.files['file']
+    physician_id = request.form.get("physician_id")
+    appointment_id = request.form.get("appointment_id")
+
+    if not physician_id or not appointment_id:
+        return jsonify({"message": "Thiếu thông tin bác sĩ hoặc mã phiếu khám!"}), 400
+
     if file.filename == '':
-        return jsonify({"message": "No selected file"}), 400
+        return jsonify({"message": "Không có file được chọn!"}), 400
 
     if not allowed_file(file.filename):
-        return jsonify({"message": "Invalid file type"}), 400
+        return jsonify({"message": "Định dạng file không hợp lệ!"}), 400
 
-    # 🔹 Lấy đường dẫn thư mục lưu ảnh từ config
-    upload_folder = current_app.config['UPLOAD_FOLDER']
-    if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder)
-
-    file_path = os.path.join(upload_folder, file.filename)
+    ext = file.filename.rsplit('.', 1)[1].lower()
+    filename = f"{physician_id}_{appointment_id}_{uuid.uuid4().hex}.{ext}"
+    file_path = os.path.join(UPLOAD_FOLDER, secure_filename(filename))
     file.save(file_path)
 
-    return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 200
+    result = predict_liver_disease(file_path)
+    disease_id = 1 if result else None 
+
+    try:
+        existing_image = Images.query.filter_by(physician_id=physician_id, appointment_id=appointment_id).first()
+
+        if existing_image:
+            existing_image.disease_id = disease_id
+            existing_image.images_path = file_path
+        else:
+            new_image = Images(
+                images_path=file_path,
+                physician_id=int(physician_id),
+                appointment_id=int(appointment_id),
+                disease_id=disease_id
+            )
+            db.session.add(new_image)
+
+        db.session.commit()
+
+        return jsonify({
+            "message": "Tải lên thành công!",
+            "file_path": file_path,
+            "diagnosis": "Có bệnh" if result else "Không có bệnh"
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": f"Lỗi khi lưu dữ liệu: {str(e)}"}), 500

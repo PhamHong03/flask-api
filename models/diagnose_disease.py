@@ -10,6 +10,7 @@ class Diagnose_Disease(db.Model):
     category_disease_id = db.Column(db.Integer, db.ForeignKey('category_disease.id'), nullable=False)
     
     category_disease = db.relationship('Category_Disease', back_populates="diagnose_diseases")
+    images = db.relationship('Images', back_populates='diagnose_disease', cascade="all, delete-orphan")
 
 
     def __init__(self, diagnose_disease_name, diagnose_disease_description, category_disease_id):

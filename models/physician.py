@@ -19,7 +19,7 @@ class Physician(db.Model):
     education = db.relationship('Education', back_populates='physicians')
     account = db.relationship('Account', backref=db.backref('physician', uselist=False))
     medical_histories = db.relationship('MedicalHistory', back_populates='physician', cascade="all, delete-orphan")
-
+    images = db.relationship('Images', back_populates='physician', cascade="all, delete-orphan")
 
     def __init__(self, name, email, phone, address, gender, education_id, specialization_id, account_id):
         self.name = name
@@ -28,5 +28,5 @@ class Physician(db.Model):
         self.address = address  
         self.gender = gender        
         self.education_id = education_id
-        self.specialization_id = specialization_id,
+        self.specialization_id = specialization_id
         self.account_id = account_id

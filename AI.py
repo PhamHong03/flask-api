@@ -1,11 +1,7 @@
-from flask import Blueprint, request, jsonify
 import os
 import numpy as np
-import cv2
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-
-ai_process_bp = Blueprint('ai_process_bp', __name__)
 
 # Định nghĩa model path
 MODEL_PATH = "./models/liver-histopathology-fibrosis-ultrasound-model.keras"
@@ -45,16 +41,3 @@ def predict_liver_disease(img_path):
         predicted_label = int(np.argmax(prediction))  
 
     return predicted_label
-
-@ai_process_bp.route('/process_image', methods=['POST'])
-def process_image():
-    """ API nhận file ảnh hoặc đường dẫn ảnh để dự đoán """
-    data = request.get_json()
-    image_path = data.get("file_path")
-
-    if not image_path or not os.path.exists(image_path):
-        return jsonify({"message": "File không tồn tại!"}), 400
-
-    result = predict_liver_disease(image_path)
-
-    return jsonify({"message": "Xử lý thành công!", "result": result}), 200

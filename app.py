@@ -68,7 +68,7 @@ app.register_blueprint(room_bp)
 app.register_blueprint(medical_history_bp)
 app.register_blueprint(application_form_bp)
 app.register_blueprint(appointment_form_bp)
-app.register_blueprint(upload_images_bp, url_prefix="/image")
+app.register_blueprint(upload_images_bp)
 
 if __name__ == "__main__":
     os.makedirs("uploads", exist_ok=True)

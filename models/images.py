@@ -17,9 +17,9 @@ class Images(db.Model):
 
     appointment_form = db.relationship('AppointmentForm', back_populates='images')
 
-    def __init__(self, images_path, physician_id, appointment_form_id, diagnose_diseases_id=None):
+    def __init__(self, images_path, physician_id, appointment_form_id, diagnose_disease_id=None):
         self.images_path = images_path
         self.created_at = datetime.utcnow()
         self.physician_id = physician_id
         self.appointment_form_id = appointment_form_id
-        self.diagnose_diseases_id = diagnose_diseases_id
+        self.diagnose_disease_id = diagnose_disease_id

@@ -44,28 +44,35 @@ def upload_image():
     result = predict_liver_disease(file_path)
     print(f"Raw result: {result}")
 
-    # if isinstance(result, str) and result.strip().lower() == "có bệnh":
-    #     disease_id = 2
-    #     diagnosis_text = "Có bệnh giai đoạn 1"
-    # else:
-    #     disease_id = 1
-    #     diagnosis_text = "Không có bệnh"
 
-
-    if isinstance(result, str) and result.strip().isdigit():
-        result_int = int(result.strip())
-        if result_int in [0, 1, 2, 3, 4]:
-            disease_id = result_int + 1
-            if result_int == 0:
+    if isinstance(result, int):
+        match result:
+            case 0:
+                disease_id = 1
                 diagnosis_text = "Không có bệnh"
-            else:
-                diagnosis_text = f"Có bệnh giai đoạn {result_int}"
-        else:
-            disease_id = 1
-            diagnosis_text = "Kết quả không xác định"
+            case 1:
+                disease_id = 2
+                diagnosis_text = "Có bệnh giai đoạn 1"
+            case 2:
+                disease_id = 3
+                diagnosis_text = "Có bệnh giai đoạn 2"
+            case 3:
+                disease_id = 4
+                diagnosis_text = "Có bệnh giai đoạn 3"
+            case 4:
+                disease_id = 5
+                diagnosis_text = "Có bệnh giai đoạn 4"
+            case _:
+                disease_id = 1
+                diagnosis_text = "Kết quả không hợp lệ"
+    
     else:
+
         disease_id = 1
         diagnosis_text = "Kết quả không hợp lệ"
+
+    print(f"disease_id: {disease_id}")
+    print(f"diagnosis_text: {diagnosis_text}")
 
 
     existing_image = Images.query.filter_by(physician_id=physician_id, appointment_form_id=appointment_id).first()

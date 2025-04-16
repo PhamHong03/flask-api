@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_from_directory
 import os
 import uuid
 from werkzeug.utils import secure_filename
@@ -6,6 +6,7 @@ from datetime import datetime
 from AI import predict_liver_disease
 from database import db
 from models.images import Images
+from werkzeug.utils import secure_filename
 
 upload_images_bp = Blueprint('upload_images_bp', __name__)
 
@@ -100,3 +101,13 @@ def upload_image():
         "images_created": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
         "diseases_id": disease_id
     }), 200
+
+
+@upload_images_bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    safe_filename = secure_filename(filename)
+    full_path = os.path.join('uploads', safe_filename)
+    if os.path.exists(full_path):
+        return send_from_directory('uploads', safe_filename)
+    else:
+        return jsonify({"message": f"Không tìm thấy file: {safe_filename}"}), 404

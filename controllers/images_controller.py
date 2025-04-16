@@ -10,7 +10,9 @@ class ImagesController:
     @staticmethod
     def get_image_by_id(image_id):
         return Images.query.get(image_id)
-    
+    @staticmethod
+    def get_images_by_appointment_id(appointment_id):
+        return Images.query.filter_by(appointment_id=appointment_id).all()
     @staticmethod
     def create_image(data):
         try:
@@ -18,7 +20,7 @@ class ImagesController:
                 images_path=data['images_path'], 
                 physician_id=data['physician_id'],
                 appointment_id=data['appointment_id'],
-                disease_id=data.get('disease_id')  
+                diagnose_disease_id=data.get('diagnose_disease_id')  
             )
             db.session.add(new_image)
             db.session.commit()

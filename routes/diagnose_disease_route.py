@@ -8,7 +8,7 @@ diagnose_disease_bp = Blueprint('diagnose_disease_bp', __name__)
 @diagnose_disease_bp.route('/diagnose_disease', methods=['GET'])   
 def get_all_diagnose_disease():    
     diagnose_diseases = DiagnoseDiseaseController.get_all_diagnose_disease()    
-    return jsonify([{"id":dd.id, "diagnose_disease_name": dd.diagnose_disease_name, "diagnose_disease_description":dd.diagnose_disease_description} for dd in diagnose_diseases])
+    return jsonify([{"id":dd.id, "diagnose_disease_name": dd.diagnose_disease_name, "diagnose_disease_description":dd.diagnose_disease_description, "category_disease_id": dd.category_disease_id} for dd in diagnose_diseases])
 
 @diagnose_disease_bp.route('/diagnose_disease/<int:diagnose_disease_id>')
 def get_diagnose_disease_by_id(diagnose_disease_id):
@@ -34,11 +34,3 @@ def create_diagnose_disease():
     
     return jsonify({"message": "Diagnose disease created successfully"}), 201
 
-# @diagnose_disease_bp.route('/diagnose_diseases/<int:diagnose_disease_id>', methods=['GET'])
-# def get_diagnose_disease(diagnose_disease_id):
-#     diagnose_disease = DiagnoseDiseaseController.get_diagnose_disease_by_id(diagnose_disease_id)
-#     return jsonify({
-#         "id": diagnose_disease.id,
-#         "diagnose_disease_name": diagnose_disease.diagnose_disease_name,
-#         "diagnose_disease_description": diagnose_disease.diagnose_disease_description
-#     })

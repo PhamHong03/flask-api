@@ -122,11 +122,11 @@ def get_all_images():
         return jsonify({"message": "Không có hình ảnh nào trong hệ thống!"}), 404
 
     images_list = [{
-        "image_id": image.id,
+        "id": image.id,
         "images_path": image.images_path,
         "physician_id": image.physician_id,
-        "appointment_form_id": image.appointment_form_id,
-        "diagnose_disease_id": image.diagnose_disease_id,
+        "appointment_id": image.appointment_form_id,
+        "diseases_id": image.diagnose_disease_id,
         "created_at": image.created_at.strftime("%Y-%m-%d %H:%M:%S")
     } for image in images]
 

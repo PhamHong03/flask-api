@@ -7,6 +7,7 @@ from AI import predict_liver_disease
 from database import db
 from models.images import Images
 from werkzeug.utils import secure_filename
+from controllers.images_controller import ImagesController
 
 upload_images_bp = Blueprint('upload_images_bp', __name__)
 
@@ -111,3 +112,22 @@ def uploaded_file(filename):
         return send_from_directory('uploads', safe_filename)
     else:
         return jsonify({"message": f"Không tìm thấy file: {safe_filename}"}), 404
+    
+
+@upload_images_bp.route('/get_images', methods=['GET'])
+def get_all_images():
+    images = ImagesController.get_images()
+
+    if not images:
+        return jsonify({"message": "Không có hình ảnh nào trong hệ thống!"}), 404
+
+    images_list = [{
+        "image_id": image.id,
+        "images_path": image.images_path,
+        "physician_id": image.physician_id,
+        "appointment_form_id": image.appointment_form_id,
+        "diagnose_disease_id": image.diagnose_disease_id,
+        "created_at": image.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    } for image in images]
+
+    return jsonify(images_list), 200

@@ -4,6 +4,7 @@ from models.physician import Physician
 from models.patient import Patient
 from models.application_form import ApplicationForm
 from models.medical_history import MedicalHistory
+from models.room import Room
 from database import db
 
 physician_bp = Blueprint('physician_bp', __name__)
@@ -92,10 +93,13 @@ def get_patients_by_physician(physician_id):
         Patient, 
         ApplicationForm.id, 
         ApplicationForm.application_form_date, 
-        ApplicationForm.content  # ✅ Lấy thêm nội dung đơn khám
+        ApplicationForm.content ,
+        ApplicationForm.room_id
+    
     )\
     .join(ApplicationForm, ApplicationForm.patient_id == Patient.id)\
     .join(MedicalHistory, ApplicationForm.medical_history_id == MedicalHistory.id)\
+    .join(Room, ApplicationForm.room_id == Room.id)\
     .filter(MedicalHistory.physician_id == physician_id).all()
 
     if not patients:
@@ -107,7 +111,8 @@ def get_patients_by_physician(physician_id):
             "patient_name": p[0].name,
             "application_form_id": p[1],  
             "application_form_date": p[2],
-            "application_form_content": p[3]  
+            "application_form_content": p[3] , 
+            "application_form_room_id": p[4]
         }
         for p in patients
     ]
